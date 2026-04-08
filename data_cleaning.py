@@ -5,6 +5,7 @@ import sqlalchemy as sa
 
 # %%
 df = pd.read_csv("dummy_transactions.csv", sep=";")
+df.drop_duplicates()
 
 # %%
 # Deleted redundant columns and switched to english names for readability
@@ -57,7 +58,7 @@ try:
     engine = sa.create_engine(
         f"mssql+pyodbc://{db_user}:{db_passw}@localhost\\SQLEXPRESS/finance_project?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
     )
-    df.to_sql("finance_table", engine, index=False, if_exists="append")
+    df.to_sql("finance_table", engine, index=True, if_exists="append")
 except Exception as e:
     print("Couldn't write to SQL server, exported to csv and xlsx", e)
     df.to_csv("finance_table_substitution.csv")
