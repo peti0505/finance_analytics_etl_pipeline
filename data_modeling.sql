@@ -39,14 +39,22 @@ GROUP BY
 accumulated AS
 (
 SELECT 
-    *
-    ,SUM(daily_movement) OVER(ORDER BY date) AS running_total
-FROM byday
+    dates_dim
+    ,COALESCE(daily_movement,0) as daily_movement
+    ,SUM(COALESCE(daily_movement,0)) OVER(ORDER BY dates_dim) AS running_total
+FROM 
+    date_dim as dd  
+    LEFT JOIN byday as bd
+    ON dd.dates_dim = bd.date
+WHERE 
+    dd.dates_dim  >= (SELECT MIN(date) FROM byday)
+    AND dd.dates_dim <= (SELECT MAX(date) FROM byday)
 )
 
 SELECT
-    running_total
-    ,AVG(running_total) OVER(ORDER BY date ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) AS moving_average
+    dates_dim
+    ,running_total
+    ,AVG(running_total) OVER(ORDER BY dates_dim ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) AS moving_average
 FROM
     accumulated
 GO
