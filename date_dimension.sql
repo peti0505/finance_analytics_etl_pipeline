@@ -36,3 +36,6 @@ BEGIN
     )
     SET @datefiller = DATEADD(DAY, 1, @datefiller)
 END
+
+ALTER TABLE finance_table ADD CONSTRAINT financeTable_dateOnly_FK
+FOREIGN KEY (Date_only) REFERENCES date_dim(dates_dim)
