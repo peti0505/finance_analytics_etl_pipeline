@@ -11,11 +11,11 @@ GO
 
 CREATE OR ALTER     VIEW [dbo].[v_transaction_master] AS
 SELECT
-    Transaction_date AS Date
-    ,DATENAME(dw, Transaction_date) AS Weekday
+    Date_only AS Date
+    ,DATENAME(dw, Date_only) AS Weekday
     --Converting week start to monday to match european standards
-    ,CASE WHEN DATEPART(dw, Transaction_date) % 7 = 0 THEN 0 
-        ELSE ((DATEPART(dw, Transaction_date)) + 6) % 7
+    ,CASE WHEN (DATEPART(dw, Date_only)+6) % 7 = 0 THEN 7
+        ELSE ((DATEPART(dw, Date_only)) + 6) % 7
     END AS weekday_number
     ,Amount
 FROM 
@@ -28,12 +28,12 @@ CREATE OR ALTER   view [dbo].[v_balance] AS
 With byday AS
 (
 SELECT
-    Transaction_date AS date 
+    Date_only AS date 
     ,Sum(Amount) AS daily_movement
 FROM
     finance_table
 GROUP BY 
-    Transaction_date
+    Date_only
 ),
 
 accumulated AS
@@ -57,7 +57,7 @@ CREATE OR ALTER VIEW [dbo].[v_yearly_Pareto_distribution] AS
 WITH year_and_partner_aggregated_expenses AS
 (
 SELECT
-    YEAR(Transaction_date) AS date_year
+    YEAR(Date_only) AS date_year
     ,Partner_name
     --Expenses are negative in the data, making it positive for better visualization
     ,(SUM(Amount))*-1 AS yearly_total
@@ -66,7 +66,7 @@ FROM
 WHERE 
     Amount < 0
 GROUP BY    
-    YEAR(Transaction_date)
+    YEAR(Date_only)
     ,Partner_name
 )
 
