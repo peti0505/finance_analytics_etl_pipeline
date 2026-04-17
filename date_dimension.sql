@@ -5,7 +5,11 @@ GO
 DECLARE @datefiller DATE
 
 IF OBJECT_ID('dbo.date_dim') IS NOT NULL
+BEGIN
+    ALTER TABLE date_dim
+    DROP CONSTRAINTS
     DROP TABLE date_dim
+END
 
 CREATE TABLE date_dim
 (
