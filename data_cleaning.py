@@ -39,6 +39,8 @@ df["Transaction_date"] = pd.to_datetime(
     df["Transaction_date"], format="%Y-%m-%d %H:%M:%S"
 )
 df.sort_values("Transaction_date", inplace=True, ignore_index=True)
+df.insert(1, "Date_only", df["Transaction_date"].dt.date)
+
 
 # %%
 # Switched Nulls to Unknown in case of future use in visualization
