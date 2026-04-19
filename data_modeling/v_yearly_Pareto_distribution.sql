@@ -1,3 +1,7 @@
+USE finance_project
+SET NOCOUNT ON
+GO
+
 CREATE OR ALTER VIEW [dbo].[v_yearly_Pareto_distribution] AS
 WITH year_and_partner_aggregated_expenses AS
 (

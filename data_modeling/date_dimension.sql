@@ -1,7 +1,3 @@
-USE finance_project
-SET NOCOUNT ON
-GO
-
 DECLARE @datefiller DATE
 
 IF OBJECT_ID('dbo.date_dim') IS NOT NULL
