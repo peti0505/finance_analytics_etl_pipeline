@@ -34,17 +34,19 @@ The main stack used: **Python -> MSSQL / T-SQL -> Power BI/DAX**
 
 2. Setup the following environment variables:
     **Windows Powershell:**
+        ```powershell
         $env:db_server="your_servername"        # eg. localhost\SQLEXPRESS
         $env:db_name="your_dbname"             # eg. finance_project
         $env:db_login_name="your_dbusername"
         $env:db_login_passw="your_dbpassword"
-    
+        ```
     **Mac/Linux:**
+        ```bash
         export db_server="your_servername"    # eg. localhost\SQLEXPRESS
         export db_name="your_dbname"           # eg. finance_project
         export db_login_name="your_dbusername"
         export db_login_passw="your_dbpassword"
-
+        ```
 3. Make sure you have a MS SQL Server instance with a database usable for this pipeline.
 
 4. **Executing**:
