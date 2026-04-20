@@ -1,6 +1,8 @@
 # finance_analytics_pipeline
 Automated end-to-end ETL data pipeline for personal finance tracking using Python (Pandas), MSSQL and Power BI/DAX
 
+<img width="720" height="405" alt="visualization" src="https://github.com/user-attachments/assets/a2872318-93e7-4c5f-ac07-8255295e77d0" />
+
 ## Business problem
 Tracking my finances was always a need of mine. Manual tracking and spreadsheets can be time consuming and prone to error, therefore the goal of this project was to build an automated pipeline that extracts raw data, cleans it, models it and visualizes it automatically.
 
