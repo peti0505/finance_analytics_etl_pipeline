@@ -30,9 +30,10 @@ The main stack used: **Python -> MSSQL / T-SQL -> Power BI/DAX**
 
 
 # How to Run Locally
-1. **Clone the repository:** 
+1. **Clone the repository:**
+    ```bash
     git clone https://github.com/peti0505/finance_analytics_pipeline.git
-
+    ```
 2. Setup the following environment variables:
     **Windows Powershell:**
    ```powershell
