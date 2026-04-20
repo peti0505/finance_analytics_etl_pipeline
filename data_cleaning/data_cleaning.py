@@ -63,11 +63,13 @@ def transactions_cleaning(df: pd.DataFrame) -> pd.DataFrame:
 def data_loading(df: pd.DataFrame) -> None:
     # Extracting to SQL, if failed then extracting into .csv and .xlsx instead
     try:
+        server_name = os.environ.get("db_server", "localhost\\SQLEXPRESS")
+        db_name = os.environ.get("db_name", "finance_project")
         db_user = os.environ.get("db_login_name")
         db_passw = os.environ.get("db_login_passw")
 
         engine = sa.create_engine(
-            f"mssql+pyodbc://{db_user}:{db_passw}@localhost\\SQLEXPRESS/finance_project?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+            f"mssql+pyodbc://{db_user}:{db_passw}@{server_name}/{db_name}?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
         )
         df.to_sql("finance_table", engine, index=True, if_exists="append")
 
