@@ -31,4 +31,3 @@ SELECT
     ,AVG(running_total) OVER(ORDER BY dates_dim ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) AS moving_average
 FROM
     accumulated
-GO

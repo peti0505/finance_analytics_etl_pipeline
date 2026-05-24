@@ -1,7 +1,3 @@
-USE finance_project
-SET NOCOUNT ON
-GO
-
 CREATE OR ALTER VIEW [dbo].[v_yearly_Pareto_distribution] AS
 WITH year_and_partner_aggregated_expenses AS
 (
@@ -26,4 +22,3 @@ SELECT
     SUM(yearly_total) OVER(PARTITION BY date_year) *100 AS rolling_yearly_percent
 FROM
     year_and_partner_aggregated_expenses
-GO

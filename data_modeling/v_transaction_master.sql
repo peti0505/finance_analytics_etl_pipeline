@@ -9,4 +9,3 @@ SELECT
     ,Amount
 FROM 
     finance_table
-GO
