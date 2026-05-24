@@ -1,6 +1,26 @@
 import os
 import pandas as pd
 import sqlalchemy as sa
+from sqlalchemy_utils import database_exists, create_database
+from pandas.util import hash_pandas_object
+from dotenv import load_dotenv
+
+
+def get_conf() -> dict:
+
+    load_dotenv()
+    conf = {
+        "filename": os.environ.get("filename"),
+        "server_name": os.environ.get("db_server", "localhost\\SQLEXPRESS"),
+        "db_name": os.environ.get("db_name", "finance_project"),
+        "db_user": os.environ.get("db_login_name"),
+        "db_passw": os.environ.get("db_login_passw"),
+        "engine": sa.create_engine(
+            f"mssql+pyodbc://{os.environ.get("db_user")}:{os.environ.get("db_passw")}@localhost\\SQLEXPRESS/{os.environ.get("db_name")}?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+        ),
+    }
+
+    return conf
 
 
 def extract_data(file_path: str) -> pd.DataFrame:
@@ -57,21 +77,24 @@ def transactions_cleaning(df: pd.DataFrame) -> pd.DataFrame:
     # Description column had some HTML spacing
     df["Description"] = df["Description"].str.replace("&nbsp;", " ")
 
+    df.insert(
+        1, "Transaction_id", hash_pandas_object(df, index=False).values.view("int64")
+    )
+    df = df.set_index("Transaction_id")
+
     return df
 
 
-def data_loading(df: pd.DataFrame) -> None:
+def setup_database(conf: dict) -> None:
+
+    if not database_exists(conf["engine"].url):
+        create_database(conf["engine"].url)
+
+
+def data_loading(df: pd.DataFrame, conf: dict) -> None:
     # Extracting to SQL, if failed then extracting into .csv and .xlsx instead
     try:
-        server_name = os.environ.get("db_server", "localhost\\SQLEXPRESS")
-        db_name = os.environ.get("db_name", "finance_project")
-        db_user = os.environ.get("db_login_name")
-        db_passw = os.environ.get("db_login_passw")
-
-        engine = sa.create_engine(
-            f"mssql+pyodbc://{db_user}:{db_passw}@{server_name}/{db_name}?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
-        )
-        df.to_sql("finance_table", engine, index=True, if_exists="append")
+        df.to_sql("transactions_temp", conf["engine"], index=False, if_exists="replace")
 
     except Exception as e:
         print("Couldn't write to SQL server, exported to csv and xlsx", e)
@@ -79,8 +102,14 @@ def data_loading(df: pd.DataFrame) -> None:
         df.to_excel("finance_table.xlsx")
 
 
+def run_sql_file(conf: dict) -> None:
+
+    pass
+
+
 if __name__ == "__main__":
-    transactions_raw = "dummy_transactions.csv"
-    raw_data = extract_data(transactions_raw)
+    conf = get_conf()
+    raw_data = extract_data(conf["filename"])
     clean_data = transactions_cleaning(raw_data)
-    data_loading(clean_data)
+    setup_database(conf)
+    data_loading(clean_data, conf)
