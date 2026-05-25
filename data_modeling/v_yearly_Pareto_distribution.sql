@@ -7,7 +7,7 @@ SELECT
     --Expenses are negative in the data, making it positive for better visualization
     ,(SUM(Amount))*-1 AS yearly_total
 FROM 
-    finance_table
+    transactions_main
 WHERE 
     Amount < 0
 GROUP BY    

@@ -8,4 +8,4 @@ SELECT
     END AS weekday_number
     ,Amount
 FROM 
-    finance_table
+    transactions_main

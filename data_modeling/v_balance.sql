@@ -5,7 +5,7 @@ SELECT
     Date_only AS Date 
     ,Sum(Amount) AS daily_movement
 FROM
-    finance_table
+    transactions_main
 GROUP BY 
     Date_only
 ),
