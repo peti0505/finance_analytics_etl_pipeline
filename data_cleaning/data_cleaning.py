@@ -94,7 +94,7 @@ def setup_database(conf: dict) -> None:
 def data_loading(df: pd.DataFrame, conf: dict) -> None:
     # Extracting to SQL, if failed then extracting into .csv and .xlsx instead
     try:
-        df.to_sql("transactions_temp", conf["engine"], index=False, if_exists="replace")
+        df.to_sql("transactions_temp", conf["engine"], index=True, if_exists="replace")
 
     except Exception as e:
         print("Couldn't write to SQL server, exported to csv and xlsx", e)
@@ -102,9 +102,14 @@ def data_loading(df: pd.DataFrame, conf: dict) -> None:
         df.to_excel("finance_table.xlsx")
 
 
-def run_sql_file(conf: dict) -> None:
+def run_sql_file(filepath: str, conf: dict) -> None:
 
-    pass
+    with open(filepath, "r") as f:
+        sql = f.read()
+
+    with conf["engine"].connect() as connection:
+        connection.execute(sa.text(sql))
+        connection.commit()
 
 
 if __name__ == "__main__":
@@ -113,3 +118,9 @@ if __name__ == "__main__":
     clean_data = transactions_cleaning(raw_data)
     setup_database(conf)
     data_loading(clean_data, conf)
+    run_sql_file("data_modeling/transactions_main_table.sql", conf)
+    run_sql_file("data_modeling/transactions_upsert.sql", conf)
+    run_sql_file("data_modeling/date_dimension.sql", conf)
+    run_sql_file("data_modeling/v_date_dimension.sql", conf)
+    run_sql_file("data_modeling/v_balance.sql", conf)
+    run_sql_file("data_modeling/v_transaction_master.sql", conf)
