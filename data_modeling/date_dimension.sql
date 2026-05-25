@@ -1,9 +1,11 @@
+SET NOCOUNT ON
+
 DECLARE @datefiller DATE
 
 IF OBJECT_ID('dbo.date_dim') IS NOT NULL
 BEGIN
-    ALTER TABLE date_dim
-    DROP CONSTRAINTS
+    ALTER TABLE transactions_main
+    DROP CONSTRAINT transactionsTable_dateOnly_FK
     DROP TABLE date_dim
 END
 
@@ -37,5 +39,5 @@ BEGIN
     SET @datefiller = DATEADD(DAY, 1, @datefiller)
 END
 
-ALTER TABLE finance_table ADD CONSTRAINT financeTable_dateOnly_FK
+ALTER TABLE transactions_main ADD CONSTRAINT transactionsTable_dateOnly_FK
 FOREIGN KEY (Date_only) REFERENCES date_dim(dates_dim)
