@@ -21,6 +21,12 @@ logger.addHandler(console_log)
 
 
 def get_conf() -> dict:
+    """
+    Fetch the variables from .env file.
+
+    Returns:
+        dict: Containing .csv filepath and database configurations.
+    """
 
     try:
         load_dotenv()
@@ -45,6 +51,15 @@ def get_conf() -> dict:
 
 
 def extract_data(file_path: str) -> pd.DataFrame:
+    """
+    Fetch data from .csv file.
+
+    Args:
+        file_path (str): Containing the path for the .csv file.
+
+    Returns:
+        pd.DataFrame: Containing the data of the .csv file.
+    """
 
     try:
         df = pd.read_csv(file_path, sep=";")
@@ -59,6 +74,15 @@ def extract_data(file_path: str) -> pd.DataFrame:
 
 
 def transactions_cleaning(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Transform the DataFrame containing the transactions.
+
+    Args:
+        df (pd.DataFrame): Containing the transactions.
+
+    Returns:
+        pd.DataFrame: Containing the transformed and cleaned transactions.
+    """
 
     try:
         df = df.drop_duplicates()
@@ -118,6 +142,12 @@ def transactions_cleaning(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def setup_database(conf: dict) -> None:
+    """
+    Set up database from the .env if it doesn't exists already.
+
+    Args:
+        conf (dict): The dict containing .csv filepath and database configurations.
+    """
 
     try:
         if not database_exists(conf["engine"].url):
@@ -133,7 +163,14 @@ def setup_database(conf: dict) -> None:
 
 
 def data_loading(df: pd.DataFrame, conf: dict) -> None:
-    # Extracting to SQL, if failed then extracting into .csv and .xlsx instead
+    """
+    Load the data to database, if failed load it into .csv and .xlsx instead.
+
+    Args:
+        df (pd.DataFrame): Contains the cleaned transactions data.
+        conf (dict): The dict containing the configurating data and authentications.
+    """
+
     try:
         df.to_sql("transactions_temp", conf["engine"], index=True, if_exists="replace")
 
@@ -144,6 +181,13 @@ def data_loading(df: pd.DataFrame, conf: dict) -> None:
 
 
 def run_sql_file(filepath: str, conf: dict) -> None:
+    """
+    Run a .sql file.
+
+    Args:
+        filepath (str): Contains the filepath to the .sql file.
+        conf (dict): The dict containing .csv filepath and database configurations.
+    """
 
     try:
         with open(filepath, "r") as f:
