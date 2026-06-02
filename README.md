@@ -81,6 +81,7 @@ Where it is possible everything was done by **DAX** and **measures**.
 ### Prequisite
 You need to have **Docker** and **Docker Compose** downloaded.
 
+### Setup
 1. **Clone the repository:**
     ```bash
     git clone https://github.com/peti0505/finance_analytics_etl_pipeline.git
