@@ -31,12 +31,11 @@ def get_conf() -> dict:
         load_dotenv()
         conf = {
             "filename": os.environ.get("filename"),
-            "server_name": os.environ.get("db_server", "localhost\\SQLEXPRESS"),
             "db_name": os.environ.get("db_name", "finance_project"),
             "db_user": os.environ.get("db_login_name"),
             "db_passw": os.environ.get("db_login_passw"),
             "engine": create_engine(
-                f"mssql+pyodbc://{os.environ.get("db_user")}:{os.environ.get("db_passw")}@localhost\\SQLEXPRESS/{os.environ.get("db_name")}?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
+                f"mssql+pyodbc://{os.environ.get('db_user')}:{os.environ.get('db_passw')}@mssqlserver/{os.environ.get('db_name')}?driver=ODBC+Driver+18+for+SQL+Server&TrustServerCertificate=yes"
             ),
         }
 
