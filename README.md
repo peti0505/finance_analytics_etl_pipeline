@@ -1,15 +1,12 @@
 # On-Premise Finance Analytics Pipeline
 Automated end-to-end ETL data pipeline for tracking personal finance on an On-Premise Microsoft SQL Server.
 
-<img width="720" height="405" alt="fvisualizationfinal" src="https://github.com/user-attachments/assets/bdd38cd1-7e49-4ecd-a85c-4004f8400c62" />
-
-
 ## Business problem
 Tracking my finances was always a need of mine. Manual tracking and spreadsheets can be time consuming and prone to error, therefore the goal of this project was to build an automated pipeline that extracts raw data, cleans it, models it and visualizes it automatically.
 
 ## Architecture and Dataflow
 
-(workflow diagram img)
+<img width="1306" height="405" alt="finance_analytics_pipeline" src="https://github.com/user-attachments/assets/1d19e7dc-74eb-491f-81ee-ddc8aa349248" />
 
 ## Tech Stack
 * **Extraction and Transformation:** Python -> Pandas, comprehensive logging and error-handling
@@ -21,7 +18,7 @@ Tracking my finances was always a need of mine. Manual tracking and spreadsheets
 
 ## Data Lineage
 
-(data lineage img)
+<img width="1306" height="366" alt="finance_analytics_lineage" src="https://github.com/user-attachments/assets/72aaea42-946d-45b5-8407-a7d7ade2c168" />
 
 1. **Source:** Extracting transactions from `.csv`
 2. **Loading:** The data is loaded into a temporary table.
@@ -34,7 +31,28 @@ Tracking my finances was always a need of mine. Manual tracking and spreadsheets
 <summary><b>Click here to collapse the full project structure</b></summary>
 
 ```text
-(filetree here)
+│   .env.EXAMPLE
+│   .gitignore
+│   docker-compose.yml
+│   dummy_transactions.csv
+│   finance_visualization.pbix
+│   README.md
+│   
+├───etl_pipeline
+│       config.py
+│       db_manager.py
+│       Dockerfile
+│       extract_transform.py
+│       main.py
+│       requirements.txt
+│       
+└───modeling
+        date_dimension.sql
+        transactions_main_table.sql
+        transactions_upsert.sql
+        v_balance.sql
+        v_date_dimension.sql
+        v_transaction_master.sql
 ```
 </details>
 
@@ -53,6 +71,10 @@ To maintain a **single source of truth** for the database all modeling and confi
 Where it is possible everything was done by **DAX** and **measures**.
 
 **Note: The dummy_transactions.csv file contains fictional transactions, it doesn't resemble any bank account history.**
+
+## Visualization
+
+<img width="720" height="405" alt="Képernyőkép 2026-06-03 010454" src="https://github.com/user-attachments/assets/2c9b0313-ff1b-4fcd-80ea-69abcef81ae5" />
 
 # How to Run Locally
 
