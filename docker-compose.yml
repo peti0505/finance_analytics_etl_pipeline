@@ -1,0 +1,27 @@
+services:
+  mssqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - 1433:1433
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_PID: Express
+      MSSQL_SA_PASSWORD: ${db_passw}
+    volumes:
+      - mssql_data:/var/opt/mssql
+
+  etl_pipeline:
+    image: finance_etl_pipeline
+    build:
+      context: ./etl_pipeline
+      dockerfile: Dockerfile
+    env_file: .env
+    volumes:
+      - ./modeling:/etl_pipeline/modeling
+      - ./python_logs:/etl_pipeline/python_logs
+      - ./${filename}:/etl_pipeline/${filename}
+    depends_on:
+      - mssqlserver
+
+volumes:
+  mssql_data:
