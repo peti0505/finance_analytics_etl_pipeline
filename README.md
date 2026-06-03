@@ -66,7 +66,7 @@ From the transactions_temp table the data is loaded into the transactions_main t
 4. **Modeling:** <br>
 Every modeling that can be done in the database is made with SQL to spare Power BI as much as possible.
 5. **Database-as-Code:** <br>
-To maintain a **single source of truth** for the database all modeling and configuration is stored in .sql files using **Create OR ALTER** statements. These files are run by python along the pipeline so it can be **version controlled and traced**.
+To maintain a **single source of truth** for the database all modeling and configuration is stored in .sql files using **CREATE OR ALTER** statements. These files are run by python along the pipeline so it can be **version controlled and traced**.
 6. **Visualization:** <br>
 Where it is possible everything was done by **DAX** and **measures**.
 
