@@ -84,7 +84,7 @@ You need to have **Docker** and **Docker Compose** downloaded.
 ### Setup
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/peti0505/finance_analytics_etl_pipeline.git
+    git clone https://github.com/phauzer/finance_analytics_etl_pipeline.git
     cd finance_analytics_etl_pipeline
     ```
 
