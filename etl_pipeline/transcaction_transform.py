@@ -1,34 +1,10 @@
 import pandas as pd
 from pandas.util import hash_pandas_object
-import logging
+from logging import getLogger
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
 
-
-def extract_data(file_path: str) -> pd.DataFrame:
-    """
-    Fetch data from .csv file.
-
-    Args:
-        file_path (str): Containing the path for the .csv file.
-
-    Returns:
-        pd.DataFrame: Containing the data of the .csv file.
-    """
-
-    try:
-        df = pd.read_csv(file_path, sep=";")
-
-    except Exception as e:
-        logger.exception("Couldn't extract data.")
-        raise
-
-    else:
-        logger.info("Data extracted successfully.")
-        return df
-
-
-def transactions_cleaning(df: pd.DataFrame) -> pd.DataFrame:
+def transactions_transform(df: pd.DataFrame) -> pd.DataFrame:
     """
     Transform the DataFrame containing the transactions.
 
